@@ -47,8 +47,8 @@ public class HamsterKombatClicker {
     while (true) {
       Optional<ClickResponse> optional = HamsterKombatClient.clickWithAPI(authorization);
       if (optional.isPresent() && optional.get().getClickerUser().getAvailableTaps() < 10) {
-        System.out.println("You are out of energy... Let's sleep 5 minute");
-        Thread.sleep(5 * 60 * 1000);
+        System.out.println("You are out of energy... Let's sleep 30 minutes");
+        Thread.sleep(30 * 60 * 1000);
         break;
       }
     }

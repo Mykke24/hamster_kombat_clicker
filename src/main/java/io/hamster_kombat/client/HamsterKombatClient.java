@@ -30,7 +30,7 @@ public class HamsterKombatClient {
 
   public static Optional<ClickResponse> clickWithAPI(String authorization) {
     ClickRequest payload = ClickRequest.builder()
-        .count(1)
+        .count(10)
         .availableTaps(AVAILABLE_TAPS != null ? AVAILABLE_TAPS : 7500)
         .timestamp(System.currentTimeMillis())
         .build();

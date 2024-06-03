@@ -13,10 +13,10 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-public class ClickRequest {
+public class BuyBoostRequest {
 
-  private int count;
-  private int availableTaps;
-  private long timestamp;
+  private String boostId;
+
+  private Long timestamp;
 
 }

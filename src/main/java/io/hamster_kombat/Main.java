@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -40,12 +41,12 @@ public class Main {
     HamsterKombatClient.checkTasks(authorization);
 
     while (true) {
-      ClickResponse clickResponse = HamsterKombatClient.clickWithAPI(authorization);
-      if (clickResponse != null && clickResponse.getClickerUser().getAvailableTaps() < 10) {
+      Optional<ClickResponse> optional = HamsterKombatClient.clickWithAPI(authorization);
+      if (optional.isPresent() && optional.get().getClickerUser().getAvailableTaps() < 10) {
         System.out.println("Token " + authorization + " có năng lượng nhỏ hơn 10. Chuyển token tiếp theo...");
         break;
       }
-      Thread.sleep(2500);
+      Thread.sleep(1000);
     }
   }
 

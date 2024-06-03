@@ -1,5 +1,6 @@
 package io.hamster_kombat.client.responses;
 
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,10 @@ import lombok.ToString;
 public class TaskDetailResponse {
 
   private String id;
-  private boolean isCompleted;
+  private int rewardCoins;
+  private String periodicity;
+  private String link;
+  private Boolean isCompleted;
+  private Date completedAt;
 
 }

@@ -14,6 +14,13 @@ import lombok.ToString;
 public class BoostDetailResponse {
 
   private String id;
+  private int price;
+  private int earnPerTap;
+  private int maxTaps;
   private int cooldownSeconds;
+  private int level;
+  private int maxTapsDelta;
+  private int earnPerTapDelta;
+  private int maxLevel;
 
 }

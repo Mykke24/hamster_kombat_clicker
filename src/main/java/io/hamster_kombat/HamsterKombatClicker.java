@@ -8,19 +8,23 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
-public class Main {
+public class HamsterKombatClicker {
 
+  private static final Scanner scanner = new Scanner(System.in);
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    List<String> authorizationList = readAuthorizationTokens("authorization.csv");
+//    List<String> authorizationList = readAuthorizationTokens("authorization.csv");
+    System.out.println("Input your token:");
+    String token = scanner.nextLine();
+    List<String> authorizationList = Arrays.asList(token);
 
     while (true) {
       for (String authorization : authorizationList) {
         runForAuthorization(authorization);
       }
-      System.out.println("Đã chạy xong tất cả các token, nghỉ 1 giây rồi chạy lại từ đầu...");
-      Thread.sleep(1000);
     }
   }
 
@@ -37,15 +41,16 @@ public class Main {
   }
 
   private static void runForAuthorization(String authorization) throws IOException, InterruptedException {
+    HamsterKombatClient.initAvailableTaps(authorization);
     HamsterKombatClient.checkTasks(authorization);
 
     while (true) {
-      ClickResponse clickResponse = HamsterKombatClient.clickWithAPI(authorization);
-      if (clickResponse != null && clickResponse.getClickerUser().getAvailableTaps() < 10) {
-        System.out.println("Token " + authorization + " có năng lượng nhỏ hơn 10. Chuyển token tiếp theo...");
+      Optional<ClickResponse> optional = HamsterKombatClient.clickWithAPI(authorization);
+      if (optional.isPresent() && optional.get().getClickerUser().getAvailableTaps() < 10) {
+        System.out.println("You are out of energy... Let's sleep 5 minute");
+        Thread.sleep(5 * 60 * 1000);
         break;
       }
-      Thread.sleep(2500);
     }
   }
 

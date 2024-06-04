@@ -11,6 +11,8 @@ import io.hamster_kombat.client.responses.BoostsResponse;
 import io.hamster_kombat.client.responses.ClickResponse;
 import io.hamster_kombat.client.responses.TaskDetailResponse;
 import io.hamster_kombat.client.responses.TaskResponse;
+import io.hamster_kombat.utils.LoggerUtil;
+import io.hamster_kombat.utils.RandomUtil;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -30,15 +32,15 @@ public class HamsterKombatClient {
 
   public static Optional<ClickResponse> clickWithAPI(String authorization) {
     ClickRequest payload = ClickRequest.builder()
-        .count(10)
+        .count(RandomUtil.randomCount())
         .availableTaps(AVAILABLE_TAPS != null ? AVAILABLE_TAPS : 7500)
         .timestamp(System.currentTimeMillis())
         .build();
     Optional<ClickResponse> optional = sendRequest(authorization, "/clicker/tap", payload, ClickResponse.class);
     if (optional.isPresent()) {
-      System.out.println("Tapping: " + optional.get().getClickerUser());
+      LoggerUtil.log("Tapping: " + optional.get().getClickerUser());
     } else {
-      System.err.println("Cannot tap.");
+      LoggerUtil.error("Cannot tap.");
     }
     return optional;
   }
@@ -52,11 +54,14 @@ public class HamsterKombatClient {
       if ("streak_days".equals(task.getId()) && Boolean.TRUE.equals(!task.getIsCompleted())) {
         ListTaskRequest listTaskRequest = new ListTaskRequest("streak_days");
         sendRequest(authorization, "/clicker/check-task", listTaskRequest, Object.class);
-        System.out.println("Daily token attendance check complete " + authorization);
+        LoggerUtil.log("Daily token attendance check complete " + authorization);
       }
     }
 
-    if (AVAILABLE_TAPS != null && AVAILABLE_TAPS > 200)
+  }
+
+  public static void checkBuyBoost(String authorization) {
+    if (AVAILABLE_TAPS != null && AVAILABLE_TAPS > 10)
       return;
 
     Optional<BoostsResponse> optionalBoostsResponse = sendRequest(authorization, "/clicker/boosts-for-buy", null, BoostsResponse.class);
@@ -72,10 +77,10 @@ public class HamsterKombatClient {
             .timestamp(System.currentTimeMillis() / 1000)
             .build();
         sendRequest(authorization, "/clicker/buy-boost", buyBoostRequest, Object.class);
-        System.out.println("Full Energy purchase for token complete " + authorization);
+        LoggerUtil.log("Full Energy purchase for token complete " + authorization);
       }
     } else {
-      System.err.println("Failed to retrieve the list of boosts ");
+      LoggerUtil.error("Failed to retrieve the list of boosts ");
     }
   }
 
@@ -87,12 +92,12 @@ public class HamsterKombatClient {
       if (response.statusCode() == 200) {
         return Optional.of(objectMapper.readValue(response.body(), responseClass));
       } else {
-        System.err.println("Failed to retrieve data for " + urlSuffix + ". Status code: " + response.statusCode());
+        LoggerUtil.error("Failed to retrieve data for " + urlSuffix + ". Status code: " + response.statusCode());
         return Optional.empty();
       }
     }
     catch (Exception ex) {
-      System.err.println("Failed to retrieve data for " + urlSuffix + ". Error: " +ex);
+      LoggerUtil.error("Failed to retrieve data for " + urlSuffix + ". Error: " +ex);
       return Optional.empty();
     }
   }

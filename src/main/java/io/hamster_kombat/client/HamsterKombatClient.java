@@ -18,6 +18,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class HamsterKombatClient {
@@ -104,11 +106,24 @@ public class HamsterKombatClient {
 
   private static HttpRequest buildRequest(String authorization, String urlSuffix, Object payload)
       throws JsonProcessingException {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Accept","*/*");
+    headers.put("Accept-Language","vi,en-US;q=0.9,en;q=0.8");
+    headers.put("Content-Type","application/json");
+    headers.put("Origin","https://hamsterkombat.io");
+    headers.put("Referer","https://hamsterkombat.io");
+    headers.put("Sec-Fetch-Dest","empty");
+    headers.put("Sec-Fetch-Mode","cors");
+    headers.put("Sec-Fetch-Site","cross-site");
+    headers.put("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36");
+    headers.put("Sec-Ch-Ua","\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"");
+    headers.put("Sec-Ch-Ua-Mobile","?1");
+    headers.put("Sec-Ch-Ua-Platform","Android");
+    headers.put("Authorization","Bearer " + authorization);
     HttpRequest.Builder builder = HttpRequest.newBuilder()
         .uri(URI.create(BASE_URL + urlSuffix))
-        .timeout(java.time.Duration.ofSeconds(10))
-        .header("Content-Type", "application/json")
-        .header("Authorization", "Bearer " + authorization);
+        .timeout(java.time.Duration.ofSeconds(10));
+    headers.forEach(builder::header);
 
     builder.POST(payload != null ? HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(payload)) : HttpRequest.BodyPublishers.noBody());
 

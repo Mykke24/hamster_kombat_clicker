@@ -60,9 +60,7 @@ public class HamsterKombatClient {
 
   }
 
-  public static void checkBuyBoost(String authorization) {
-    if (AVAILABLE_TAPS != null && AVAILABLE_TAPS > 10)
-      return;
+  public static boolean checkBuyBoost(String authorization) {
 
     Optional<BoostsResponse> optionalBoostsResponse = sendRequest(authorization, "/clicker/boosts-for-buy", null, BoostsResponse.class);
 
@@ -78,10 +76,12 @@ public class HamsterKombatClient {
             .build();
         sendRequest(authorization, "/clicker/buy-boost", buyBoostRequest, Object.class);
         LoggerUtil.log("Full Energy purchase for token complete " + authorization);
+        return true;
       }
     } else {
       LoggerUtil.error("Failed to retrieve the list of boosts ");
     }
+    return false;
   }
 
   private static <T> Optional<T> sendRequest(String authorization, String urlSuffix, Object payload, Class<T> responseClass) {

@@ -47,9 +47,14 @@ public class HamsterKombatClicker {
     HamsterKombatClient.checkTasks(authorization);
 
     while (true) {
-      HamsterKombatClient.checkBuyBoost(authorization);
+      boolean justBuyBoost = false;
       Optional<ClickResponse> optional = HamsterKombatClient.clickWithAPI(authorization);
-      if (optional.isPresent() && optional.get().getClickerUser().getAvailableTaps() < 10) {
+      boolean isOutOfEnergy = optional.isPresent() && optional.get().getClickerUser().getAvailableTaps() < 10;
+      if (isOutOfEnergy) {
+        justBuyBoost = HamsterKombatClient.checkBuyBoost(authorization);
+      }
+
+      if (isOutOfEnergy && !justBuyBoost) {
         int sleepTime = RandomUtil.randomSleepTime();
         LoggerUtil.log("You are out of energy... Let's sleep " + sleepTime + " minutes");
         Thread.sleep(sleepTime * 60 * 1000);

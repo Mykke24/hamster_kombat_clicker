@@ -1,6 +1,7 @@
 # Master Hamster Kombat Bot!
 
 ❌ This project is intended for testing purposes only. Please refrain from abusing it. ❌
+
 ✅ Tested and confirmed to work as of `21 Jun 2024`. ✅
 
 

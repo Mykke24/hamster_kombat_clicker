@@ -2,7 +2,7 @@
 
 ❌ This project is intended for testing purposes only. Please refrain from abusing it. ❌
 
-✅ Tested and confirmed to work as of `21 Jun 2024`. ✅
+✅ Tested and confirmed to work as of `22 Jun 2024`. ✅
 
 
 #### ⭐ If you find this project useful, please consider giving it a star! ⭐
@@ -15,10 +15,10 @@
 - Auto upgrade -> buys most profitable cards based on maxProfitRatioPerHour
 - Auto daily cipher -> extracts the daily cipher from the API and automatically sends the request for the combo
 - Auto sleeper -> if there is nothing to do, and wakes up to either auto tap or buy upgrades etc
+- Auto Earn Youtube Hamster Videos - automatically watch the video for 100k extra Coins
 
 ## 🗒️ Todos:
 - Auto Daily Combo - automatically buy the daily combo cards for 5 mio extra Coins
-- Auto Earn with Youtube Hamster Videos - automatically watch the video for 100k extra Coins
 
 ## 💻 How to get the Auth Token for the bot
 1. Get [HTTP-ToolKit](https://httptoolkit.com/)
